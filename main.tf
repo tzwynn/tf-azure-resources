@@ -115,3 +115,25 @@ resource "azurerm_network_interface_security_group_association" "tf_nsg_assoc" {
   network_interface_id      = azurerm_network_interface.tf_nic.id
   network_security_group_id = azurerm_network_security_group.tf_nsg.id
 }
+
+#creating a storage account
+#AWS does not have storage account concept, AWS exposes all storage option as seperate services
+resource "azurerm_storage_account" "tf_storage_acc" {
+  name                     = "tztfstorageacckjoeri9e"
+  resource_group_name      = azurerm_resource_group.tf_rg.name
+  location                 = azurerm_resource_group.tf_rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  tags = {
+    environment = "staging"
+  }
+}
+
+#creating a blob container with blob only access
+#equivalent to AWS S3 bucket
+resource "azurerm_storage_container" "tf_blob_container" {
+  name                  = "tz-tf-test-1"
+  storage_account_name  = azurerm_storage_account.tf_storage_acc.name
+  container_access_type = "blob"
+}
