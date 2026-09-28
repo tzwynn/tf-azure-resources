@@ -1,4 +1,11 @@
 # We strongly recommend using the required_providers block to set the
+# state file to save in the different location
+terraform {
+  backend "local" {
+    path = "mystate/terraform.tfstate"
+  }
+}
+
 # Azure Provider source and version being used
 terraform {
   required_providers {
